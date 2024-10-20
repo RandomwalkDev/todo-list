@@ -11,11 +11,13 @@ import todoService from '../Services/TodoService';
 import { toast } from 'react-hot-toast';
 import textToSpeech from '../utils/TextToSpeech';
 import { ColorRing } from 'react-loader-spinner'
+import { useSelector } from 'react-redux';
 
 const Todo = ({ item }) => {
     const [completed, setCompleted] = useState(item.completed);
     const [wait, setWaiting] = useState(false);
     const dispatch = useDispatch();
+    const theme = useSelector((state) => state.theme.theme);
 
     const handleCompleteTask = async () => {
         try {
@@ -48,7 +50,9 @@ const Todo = ({ item }) => {
 
     const handleDeleteTodo = async () => {
         try {
+            setWaiting(true)
             let result = await todoService.deleteTodo(item._id);
+            setWaiting(false)
             if (result.data) {
                 // success
                 const { data: { todo } } = result;
@@ -63,6 +67,7 @@ const Todo = ({ item }) => {
                 textToSpeech("Sorry! Task Cannot be Deleted ! Try again later !");
             }
         } catch (error) {
+            setWaiting(false)
             console.log(error)
             textToSpeech("Sorry! Task Cannot be Deleted ! Try again later !");
         }
@@ -74,9 +79,10 @@ const Todo = ({ item }) => {
                 {wait ? <ColorRing height={"40"} /> : <IconButton onClick={handleCompleteTask}>
                     {completed ? <CheckBoxIcon
                         sx={{
-                            color: "green"
+                            color: (theme === 'light') ? "white" : "green",
                         }}
                     /> : <CheckBoxOutlineBlankIcon
+                            sx={{color: (theme === 'light') ? "white" : ""}}
                     />}
                 </IconButton>}
                 <li key={item._id} className={`${completed ? "line-through" : ""}`} >
@@ -86,15 +92,18 @@ const Todo = ({ item }) => {
             </div>
             <div className='flex items-center justify-center gap-2 '>
                 <IconButton
-                    sx={{ color: "blue" }}
+                    sx={{ color: (theme === 'light') ? "white" : "blue" }}
                     onClick={handleEditTodo}
                 >
                     <EditIcon />
                 </IconButton>
-                <IconButton sx={{ color: "red" }}
+                {wait ? <ColorRing height={"40"} /> :
+                    <IconButton
+                    sx={{ color: (theme === 'light') ? "white" : "red" }}
                     onClick={handleDeleteTodo}>
                     <DeleteIcon />
-                </IconButton>
+                </IconButton>}
+
             </div>
         </div>
     )

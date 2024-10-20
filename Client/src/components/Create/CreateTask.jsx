@@ -5,12 +5,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addTodo, editTodo, setEditing, setTodoInput } from '../../store/todoSlice.js';
 import todoService from '../../Services/TodoService.js';
 import { toast } from 'react-hot-toast'
+import { ColorRing } from 'react-loader-spinner';
 
 const CreateTask = ({ item }) => {
 
   let todoInput = useSelector((state) => state.todo.todoInput);
   const editing = useSelector((state) => state.todo.editing);
   const dispatch = useDispatch();
+  const [wait, setWait] = useState(false)
 
   const {
     transcript,
@@ -23,12 +25,14 @@ const CreateTask = ({ item }) => {
 
       try {
         let result;
+        setWait(true)
         if (editing) {
           result = await todoService.editTodo(editing._id, { ...editing, todo: todoInput });
         }
         else {
           result = await todoService.addTodo(todoInput);
         }
+        setWait(false)
         if (result.data) {
           // success
           const { data: { todo } } = result;
@@ -47,6 +51,7 @@ const CreateTask = ({ item }) => {
         }
         else {
           // error
+          setWait(false)
           const { response: { data: { message } } } = result;
           toast.error(message)
           if (editing) {
@@ -58,6 +63,7 @@ const CreateTask = ({ item }) => {
           }
         }
       } catch (error) {
+        setWait(false)
         console.log(error)
         dispatch(setEditing(null));
         textToSpeech("Sorry ! Cannot add todo ! Try again later!");
@@ -89,14 +95,15 @@ const CreateTask = ({ item }) => {
           className='border-none outline-slate-800 py-2 px-4 font-serif text-xl bg-slate-500 text-white w-full min-w-20 rounded-md shadow-lg cursor-pointer'
           id='create'
         />
-        <button type='submit' className='py-1 px-2 bg-purple-800 text-white font-bold rounded-md text-center shadow-lg hover:bg-purple-700 transition-all duration-100'>Add</button>
+        {wait ? <ColorRing height={"40"} /> : <button type='submit' className='py-1 px-2 bg-red-500 hover:bg-red-400 dark:bg-purple-800 text-white font-bold rounded-md text-center shadow-lg dark:hover:bg-purple-700 transition-all duration-100'>Add</button>}
+
       </form>
-      <button className='py-1 px-2 bg-purple-800 text-white font-bold rounded-md text-center shadow-lg hover:bg-purple-700 transition-all duration-100'
+      <button className='py-1 px-2 bg-red-500 hover:bg-red-400 dark:bg-purple-800 text-white font-bold rounded-md text-center shadow-lg dark:hover:bg-purple-700 transition-all duration-100'
         onTouchStart={startListening}
         onTouchEnd={stopListening}
         onMouseDown={startListening}
         onMouseUp={stopListening}
-      >Hold To Speek Speech</button>
+      >Speak & Add</button>
     </div>
   )
 }
