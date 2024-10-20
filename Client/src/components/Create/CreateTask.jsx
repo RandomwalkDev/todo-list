@@ -1,31 +1,80 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useReducer, useRef } from 'react'
 import textToSpeech from "../../utils/TextToSpeech.js"
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
-// import '../node_modules/regenerator-runtime/runtime.js'
+import { useDispatch, useSelector } from 'react-redux';
+import { addTodo, editTodo, setEditing, setTodoInput } from '../../store/todoSlice.js';
+import todoService from '../../Services/TodoService.js';
+import { toast } from 'react-hot-toast'
 
-const CreateTask = () => {
-  const [input, setInput] = useState('');
+const CreateTask = ({ item }) => {
+
+  let todoInput = useSelector((state) => state.todo.todoInput);
+  const editing = useSelector((state) => state.todo.editing);
+  const dispatch = useDispatch();
+
   const {
     transcript,
     resetTranscript,
   } = useSpeechRecognition();
 
-  const handleAddTask = (event) => {
+  const handleAddTask = async (event) => {
     event?.preventDefault();
-    if (input) {
-      console.log(input)
-      textToSpeech("Task Added to Todo List !");
-      setInput("");
+    if (todoInput) {
+
+      try {
+        let result;
+        if (editing) {
+          result = await todoService.editTodo(editing._id, { ...editing, todo: todoInput });
+        }
+        else {
+          result = await todoService.addTodo(todoInput);
+        }
+        if (result.data) {
+          // success
+          const { data: { todo } } = result;
+
+          if (editing) {
+            toast.success('Task Editied Successfully !');
+            textToSpeech("Task Editied Successfully !");
+            dispatch(setEditing(null));
+            dispatch(editTodo(todo));
+          }
+          else {
+            toast.success('Task Added to Todo List !');
+            textToSpeech("Task Added to Todo List !");
+            dispatch(addTodo(todo));
+          }
+        }
+        else {
+          // error
+          const { response: { data: { message } } } = result;
+          toast.error(message)
+          if (editing) {
+            textToSpeech("Sorry ! Cannot edit todo ! Try again later!");
+            dispatch(setEditing(null));
+          }
+          else {
+            textToSpeech("Sorry ! Cannot add todo ! Try again later!");
+          }
+        }
+      } catch (error) {
+        console.log(error)
+        dispatch(setEditing(null));
+        textToSpeech("Sorry ! Cannot add todo ! Try again later!");
+      }
+      dispatch(setEditing(null));
+      dispatch(setTodoInput(""));
+      resetTranscript();
     }
   }
 
   const startListening = () => {
-    setInput("");
+    dispatch(setTodoInput(""));
     SpeechRecognition.startListening({ continuous: true });
   }
   const stopListening = () => {
     SpeechRecognition.stopListening();
-    setInput(transcript);
+    dispatch(setTodoInput(transcript));
     resetTranscript();
   }
 
@@ -33,8 +82,10 @@ const CreateTask = () => {
     <div>
       <form action="" onSubmit={handleAddTask} className='my-2 flex gap-2'>
         <input type="text"
-          value={input || transcript}
-          onChange={(event) => setInput(event.target.value)}
+          value={todoInput || transcript}
+          onChange={(event) => {
+            dispatch(setTodoInput(event.target.value));
+          }}
           className='border-none outline-slate-800 py-2 px-4 font-serif text-xl bg-slate-500 text-white w-full min-w-20 rounded-md shadow-lg cursor-pointer'
           id='create'
         />

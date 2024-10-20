@@ -21,9 +21,11 @@ app.use('/api/todo', TodoRouter);
 
 
 // server
-dbConnect().then((err) => {
-    if (err) throw err;
-    console.log(`Server running at PORT : ${PORT}`);
+dbConnect().then(() => {
+    app.listen(PORT, (err) => {
+        if (err) throw err;
+        console.log(`Server running at PORT : ${PORT}`);
+    })
 }).catch((error) => {
     console.log("Error! Cannot start server : ", error);
 })
@@ -35,6 +37,6 @@ app.use((err, req, res, next) => {
 
     return res.status(errorStatus).json({
         success: false,
-        message : errorMessage
+        message: errorMessage
     })
 })

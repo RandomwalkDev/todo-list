@@ -5,6 +5,7 @@ import './App.css'
 import CreateTask from './components/Create/CreateTask'
 import TodoList from './components/Todos-List/TodoList'
 import textToSpeech from './utils/TextToSpeech.js'
+import { Toaster } from 'react-hot-toast';
 
 function App() {
 
@@ -29,6 +30,9 @@ function App() {
           <CreateTask />
           <TodoList />
         </main>
+
+
+        <Toaster />
       </div>
     </div>
   )

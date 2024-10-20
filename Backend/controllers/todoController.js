@@ -3,7 +3,7 @@ import TodoModel from "../models/TodoModel.js";
 
 export const getTodos = async (req, res, next) => {
     try {
-        const todos = await TodoModel.find({});
+        const todos = await TodoModel.find({}).sort({ createdAt: 1 });
         return res.status(200).json({
             success: true,
             message: (todos.length > 0) ? "All Todos Fetched !" : "No Todos present !",
@@ -31,8 +31,8 @@ export const createTodo = async (req, res, next) => {
 export const editTodo = async (req, res, next) => {
     try {
         const { id } = req.params;
-        const { todo } = req.body;
-        const updatedTodo = await TodoModel.findByIdAndUpdate(id, { todo }, { new: true });
+        console.log("The todo : ", req.body);
+        const updatedTodo = await TodoModel.findByIdAndUpdate(id, req.body, { new: true });
         return res.status(200).json({
             success: true,
             message: "Todo Updated Successfully!",

@@ -1,6 +1,6 @@
 import express from "express"
-const router = express.Router();
 import { createTodo, deleteTodo, editTodo, getTodos } from "../controllers/todoController.js";
+const router = express.Router();
 
 router.get('/getTodos', getTodos);
 router.post('/create', createTodo);
