@@ -99,8 +99,8 @@ const CreateTask = ({ item }) => {
 
       </form>
       <button className='py-1 px-2 bg-red-500 hover:bg-red-400 dark:bg-purple-800 text-white font-bold rounded-md text-center shadow-lg dark:hover:bg-purple-700 transition-all duration-100'
-        onTouchStart={startListening}
-        onTouchEnd={stopListening}
+        // onTouchStart={startListening}
+        // onTouchEnd={stopListening}
         onMouseDown={startListening}
         onMouseUp={stopListening}
       >Speak & Add</button>
