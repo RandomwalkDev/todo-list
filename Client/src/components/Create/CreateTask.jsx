@@ -76,6 +76,8 @@ const CreateTask = ({ item }) => {
 
   const startListening = () => {
     dispatch(setTodoInput(""));
+    SpeechRecognition.stopListening();
+    resetTranscript();
     SpeechRecognition.startListening({ continuous: true });
   }
   const stopListening = () => {
