@@ -1,4 +1,4 @@
-# todo-list
+# Todo-list
 
 ## Instructions:
 1. Fork the github repo into your personal Github account and take a clone into your local system.
@@ -6,26 +6,8 @@
     Guide to Forking Github Repo: https://docs.github.com/en/github-ae@latest/get-started/quickstart/fork-a-repo
     
     Guide for cloning Github Repo: https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository
-    
-2. Instantiate Virtual Studio code or any Development environment of your choice to complete the assessment in your local working directory.
-3. Save the files and push it into forked Github github repo.
-    
-    Guide to pushing code into Github Repo: https://docs.github.com/en/migrations/importing-source-code/using-the-command-line-to-import-source-code/adding-locally-hosted-code-to-github
-    
-4. Record a screencast video recording demonstrating the solution in your system and upload the video into the forked github repo.
-    
-    Guide to record screen in
-    
-    a) MAC: https://support.apple.com/en-in/102618
-    
-    b) Windows: https://www.microsoft.com/en-us/windows/learning-center/how-to-record-screen-windows-11
-    
-    c) Ubuntu: https://askubuntu.com/questions/4428/how-can-i-record-my-screen
-    
-5. Share the repository link into the Google Form: [https://forms.gle/2HbLP8GNiYArZFsj8](https://forms.gle/ufqFg2Kgk5C54Amn7)
-![image](https://github.com/user-attachments/assets/712746d0-19c1-4112-b812-b2d933fef869)
 
-## Problem Statement:
+<!-- ## Problem Statement:
 Your task is to create a TODO List, 
 wait... its not a normal TODO list that you find in Youtube, The task is to build a TODO list that works for everyone, this includes:-
 - people of all Ages (old age , small kids ) 
@@ -60,4 +42,46 @@ Our aim is to assess applicants' aptitude, innovative thinking, and their abilit
 
 **Push the source code along with a demo video of your solution into the forked github repo. Share the repo link in the google form: [https://forms.gle/2HbLP8GNiYArZFsj8](https://forms.gle/ufqFg2Kgk5C54Amn7)**
 
-Designers can provide a link to the document outlining all the UI/UX principles used instead of a GitHub link.
+Designers can provide a link to the document outlining all the UI/UX principles used instead of a GitHub link. -->
+
+## Installation
+
+1.We should have Node JS, Git and MongoDB installed on our system.
+
+2.First of all, change the directory to both Client and Backend (both) and run the command - npm install.
+
+3. Now, Change the directory to Client and run command - npm run dev.
+
+4. Now open another terminal , Change the directory to Backend and run command - node index.js.
+
+5. Now run [localhost:5173](http://localhost:5173/) in the browser.
+
+6. Video demonstration is provided in the github repository. Please check it !
+
+## Tech Stack
+1. Frontend: React.js, Tailwind CSS , Redux Toolkit + React-Redux
+
+2. Backend: Node.js, Express.js
+
+3. Database: MongoDB
+
+## Features
+
+### 1. Task Management
+- **a.** : Add, update, and delete tasks.
+- **b.** : Mark tasks as completed.
+
+### 2.Speech Accesibility
+
+Individuals with special needs face a variety of challenges. So, inorder to incorporate this issue, I have added the access to add tasks to our Todo List by
+Speech facility. We can speak the tasks and it will be added to our TODO List.
+
+### 3.Dark Mode
+
+Toggle between light and dark themes for a comfortable user experience in different environments. This also stands to be helpful for  people of all Ages (old age , small kids)
+
+## Live Link
+
+The website is deployed live on : https://todo-list-cohort.vercel.app/
+
+Note : Please wait a little if website is slow, as it is deployed on a free server account.
